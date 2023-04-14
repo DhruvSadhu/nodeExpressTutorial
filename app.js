@@ -28,6 +28,32 @@ app.engine('hbs', exphbs.engine({'extname':'.hbs'}));
 app.set('view engine', 'hbs');
 
 
+//create a connection pool (cache of database connections)
+const pool = mysql.createPool({
+    connectionLimit: 100,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    database: process.env.DB_NAME
+
+});
+
+//connect to database
+pool.getConnection( (err, connection)=> {
+    if (err){
+        console.log("connection error");
+        throw err; //something is wrong, not connected
+    }
+    console.log('Connected as ID ' + connection.threadId);
+})
+
+
+
+
+
+
+
+
+
 //router
 app.get('', (req, res) =>{
     res.render('home');
