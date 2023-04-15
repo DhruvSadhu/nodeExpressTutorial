@@ -38,11 +38,11 @@ exports.find = (req, res) => {
     }
     console.log("Connected as ID " + connection.threadId);
 
-    let searchTerm = req.body.search;
+    let searchTerm = req.body.dhruvSearch;
     console.log("request: ", req);
     console.log("request body: ", req.body);
     // the ? is apparently used to help prevent sql injections 
-    connection.query('SELECT * FROM user WHERE first_name LIKE ?', ['%'+searchTerm+'%'], (err, rows) => {
+    connection.query('SELECT * FROM user WHERE first_name LIKE ? OR last_name like ?', ['%'+searchTerm+'%','%'+searchTerm+'%'], (err, rows) => {
       //done with connection, release
       connection.release();
 
